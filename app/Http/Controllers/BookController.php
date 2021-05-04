@@ -19,6 +19,7 @@ class BookController extends Controller
     {
         $books = Book::all();
         return response()->json($books);
+
     }
 
     /**
@@ -41,18 +42,19 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title'=>'required',
-            'author'=>'required',
-            'category'=>'required',
-            'description'=>'required',
-            'rating'=>'required',
-            'image'=>'required'
-        ]);
+        // $request->validate([
+        //     'title'=>'required',
+        //     'author'=>'required',
+        //     'category'=>'required',
+        //     'description'=>'required',
+        //     'rating'=>'required',
+        //     'image'=>'required'
+        // ]);
         $book = new Book;
         $book->fill($request->all());
         $book->save();
-        return redirect('/books')->with('success', 'Book saved!');
+        // return redirect('/books')->with('success', 'Book saved!');
+        return $book;
 
     }
 
@@ -62,9 +64,9 @@ class BookController extends Controller
      * @param  \App\Providers\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show($id)
     {
-        //
+        return Book::find($id);
     }
 
     /**
@@ -87,7 +89,16 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $request->validate([
+            'title'=>'required',
+            'author'=>'required',
+            'category'=>'required',
+            'description'=>'required',
+            'rating'=>'required',
+            'image'=>'required'
+        ]);
+        $book->update($request->all());
+        return $book;
     }
 
     /**
@@ -96,8 +107,8 @@ class BookController extends Controller
      * @param  \App\Providers\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy(Book $book, $id)
     {
-        //
+        return Book::destroy($id);
     }
 }
